@@ -29,18 +29,18 @@ public partial class Reservation
     [Required, Display(Name = "Start Time")]
     public DateTime StartTime { get; set; }
 
+    [Display(Name = "Duration(Mins)")]
     [Range(15, 300)]
     public int Duration { get; set; }
 
     [Required, Range(1, 20), Display(Name = "Guests")]
     public int NumOfGuests { get; set; } = 2;
 
-    [Required, Display(Name = "Source")]
+    [Required, Display(Name = "Booking Type")]
     public string ReservationSource { get; set; } = "Online";
 
     public string? Notes { get; set; }
 
- 
     public string Status { get; set; } = "Pending";
 
     // You won't post this from the form; set it in the controller
