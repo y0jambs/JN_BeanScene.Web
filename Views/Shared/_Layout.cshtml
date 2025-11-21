@@ -16,7 +16,7 @@
         <nav class="navbar navbar-expand-sm navbar-light bg-light border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand fw-bold text-primary" asp-area="" asp-controller="Home" asp-action="Index">
-                    ☕ BeanScene Café
+                    BeanScene Cafe
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,11 +41,23 @@
                         -->
 
                         <!-- Add your app pages -->
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Reservations" asp-action="Index">
-                                Reservations
-                            </a>
-                        </li>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Staff"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark"
+                                   asp-controller="Reservations"
+                                   asp-action="Index">Reservations (Admin)</a>
+                            </li>
+                        }
+
+                        @if (User.IsInRole("Member"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark"
+                                   asp-controller="Reservations"
+                                   asp-action="Create">Make Reservation</a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="SittingSchedules" asp-action="Index">
                                 Sitting Schedules
@@ -64,14 +76,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Chat" asp-action="Index">Chat</a>
                         </li>
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Admin" asp-action="Users">
-                                    Manage Users
-                                </a>
-                            </li>
-                        }
+
 
                     </ul>
 

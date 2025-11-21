@@ -2,6 +2,8 @@ using BeanScene.Web.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using BeanScene.Web.Hubs;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using BeanScene.Web.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,11 +22,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(opts => opts.UseSqlServer(cs
 builder.Services
     .AddIdentity<ApplicationUser, IdentityRole>(o => {
         o.SignIn.RequireConfirmedAccount = true;
+        o.User.RequireUniqueEmail = true;
     })
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders()
     .AddDefaultUI();
 
+builder.Services.AddTransient<IEmailSender, SmtpEmailSender>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddSignalR();

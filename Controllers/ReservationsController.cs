@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace BeanScene.Web.Controllers
 {
-    //[Authorize(Roles = "Admin,Staff")]
+    [Authorize(Roles = "Admin,Staff,Member")]
     public class ReservationsController : Controller
     {
         private readonly BeanSceneContext _context;
@@ -22,11 +22,19 @@ namespace BeanScene.Web.Controllers
         }
 
         // GET: Reservations
+        [Authorize(Roles = "Admin,Staff")]
         public async Task<IActionResult> Index()
         {
             var beanSceneContext = _context.Reservations.Include(r => r.Sitting);
             return View(await beanSceneContext.ToListAsync());
         }
+
+        [Authorize(Roles = "Admin,Staff,Member")]
+        public IActionResult Confirmation()
+        {
+            return View();
+        }
+
 
         // GET: Reservations/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -48,6 +56,7 @@ namespace BeanScene.Web.Controllers
         }
 
         // GET: Reservations/Create
+        [Authorize(Roles = "Admin,Staff,Member")]
         public IActionResult Create()
         {
             ViewData["SittingId"] = new SelectList(_context.SittingSchedules, "SittingScheduleId", "SittingScheduleId");
@@ -57,6 +66,7 @@ namespace BeanScene.Web.Controllers
         // POST: Reservations/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin,Staff,Member")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ReservationId,SittingId,FirstName,LastName,Email,Phone,StartTime,Duration,NumOfGuests,ReservationSource,Notes,CreatedAt")] Reservation reservation)
@@ -67,7 +77,8 @@ namespace BeanScene.Web.Controllers
 
                 _context.Add(reservation);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Confirmation));
+
             }
             ViewData["SittingId"] = new SelectList(_context.SittingSchedules, "SittingScheduleId", "SittingScheduleId", reservation.SittingId);
             return View(reservation);
