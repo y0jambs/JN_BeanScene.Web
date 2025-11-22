@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<BeanScene.Web.Controllers.UserRoleViewModel>
+
 @{
     ViewData["Title"] = "Manage Users & Roles";
 }
@@ -19,7 +20,8 @@
         <tr>
             <th>Email</th>
             <th>Current Role(s)</th>
-            <th>Assign New Role</th>
+            <th style="width: 280px;">Assign New Role</th>
+            <th style="width: 120px;">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -32,11 +34,22 @@
                     <form asp-action="AssignRole" method="post" class="d-flex">
                         <input type="hidden" name="userId" value="@user.UserId" />
                         <select name="role" class="form-select form-select-sm me-2">
-                            <option>Member</option>
-                            <option>Staff</option>
-                            <option>Admin</option>
+                            <option value="Member">Member</option>
+                            <option value="Staff">Staff</option>
+                            <option value="Admin">Admin</option>
                         </select>
                         <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                    </form>
+                </td>
+                <td>
+                    <form asp-action="DeleteUser"
+                          method="post"
+                          class="d-inline"
+                          onsubmit="return confirm('Are you sure you want to delete @user.Email?');">
+                        <input type="hidden" name="userId" value="@user.UserId" />
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            Delete
+                        </button>
                     </form>
                 </td>
             </tr>

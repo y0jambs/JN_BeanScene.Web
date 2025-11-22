@@ -50,14 +50,13 @@
                             </li>
                         }
 
-                        @if (User.IsInRole("Member"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark"
-                                   asp-controller="Reservations"
-                                   asp-action="Create">Make Reservation</a>
-                            </li>
-                        }
+                        
+                        <li class="nav-item">
+                            <a class="nav-link text-dark"
+                                asp-controller="Reservations"
+                                asp-action="Create">Make Reservation</a>
+                        </li>
+                        
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="SittingSchedules" asp-action="Index">
                                 Sitting Schedules
@@ -76,6 +75,15 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Chat" asp-action="Index">Chat</a>
                         </li>
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark"
+                                   asp-controller="Admin"
+                                   asp-action="Users">Manage Users</a>
+                            </li>
+                        }
 
 
                     </ul>

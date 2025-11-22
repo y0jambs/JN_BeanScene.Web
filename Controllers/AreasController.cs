@@ -1,15 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BeanScene.Web.Data;
+using BeanScene.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using BeanScene.Web.Data;
-using BeanScene.Web.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BeanScene.Web.Controllers
 {
+    [Authorize(Roles = "Admin,Staff")]
     public class AreasController : Controller
     {
         private readonly BeanSceneContext _context;
@@ -26,6 +28,7 @@ namespace BeanScene.Web.Controllers
         }
 
         // GET: Areas/Details/5
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -44,6 +47,7 @@ namespace BeanScene.Web.Controllers
         }
 
         // GET: Areas/Create
+        [Authorize(Roles = "Admin,Staff")]
         public IActionResult Create()
         {
             return View();
@@ -66,6 +70,7 @@ namespace BeanScene.Web.Controllers
         }
 
         // GET: Areas/Edit/5
+        [Authorize(Roles = "Admin,Staff")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -117,6 +122,7 @@ namespace BeanScene.Web.Controllers
         }
 
         // GET: Areas/Delete/5
+        [Authorize(Roles = "Admin,Staff")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

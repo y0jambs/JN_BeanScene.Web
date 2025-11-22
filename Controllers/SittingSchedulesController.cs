@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 namespace BeanScene.Web.Controllers
 
 {
-    [Authorize(Roles = "Admin,Staff,Member")]
     public class SittingSchedulesController : Controller
     {
         private readonly BeanSceneContext _context;
@@ -29,6 +28,7 @@ namespace BeanScene.Web.Controllers
         }
 
         // GET: SittingSchedules/Details/5
+        [Authorize(Roles = "Admin,Staff")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -47,6 +47,7 @@ namespace BeanScene.Web.Controllers
         }
 
         // GET: SittingSchedules/Create
+        [Authorize(Roles = "Admin,Staff")]
         public IActionResult Create()
         {
             return View();
@@ -69,6 +70,7 @@ namespace BeanScene.Web.Controllers
         }
 
         // GET: SittingSchedules/Edit/5
+        [Authorize(Roles = "Admin,Staff")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -89,6 +91,7 @@ namespace BeanScene.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Staff")]
         public async Task<IActionResult> Edit(int id, [Bind("SittingScheduleId,Stype,StartDateTime,EndDateTime,Scapacity,Status,IsClosed")] SittingSchedule sittingSchedule)
         {
             if (id != sittingSchedule.SittingScheduleId)
@@ -120,6 +123,7 @@ namespace BeanScene.Web.Controllers
         }
 
         // GET: SittingSchedules/Delete/5
+        [Authorize(Roles = "Admin,Staff")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
