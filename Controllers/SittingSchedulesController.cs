@@ -2,16 +2,13 @@
 using BeanScene.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace BeanScene.Web.Controllers
-
 {
+    [Authorize(Roles = "Admin,Staff,Member")]
     public class SittingSchedulesController : Controller
     {
         private readonly BeanSceneContext _context;
@@ -20,7 +17,7 @@ namespace BeanScene.Web.Controllers
         {
             _context = context;
         }
-        
+
         // GET: SittingSchedules
         public async Task<IActionResult> Index()
         {
@@ -54,11 +51,10 @@ namespace BeanScene.Web.Controllers
         }
 
         // POST: SittingSchedules/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SittingScheduleId,Stype,StartDateTime,EndDateTime,Scapacity,Status,IsClosed")] SittingSchedule sittingSchedule)
+        [Authorize(Roles = "Admin,Staff")]
+        public async Task<IActionResult> Create([Bind("SittingScheduleId,Stype,StartTime,EndTime,Scapacity,Status,IsClosed")] SittingSchedule sittingSchedule)
         {
             if (ModelState.IsValid)
             {
@@ -87,12 +83,10 @@ namespace BeanScene.Web.Controllers
         }
 
         // POST: SittingSchedules/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Staff")]
-        public async Task<IActionResult> Edit(int id, [Bind("SittingScheduleId,Stype,StartDateTime,EndDateTime,Scapacity,Status,IsClosed")] SittingSchedule sittingSchedule)
+        public async Task<IActionResult> Edit(int id, [Bind("SittingScheduleId,Stype,StartTime,EndTime,Scapacity,Status,IsClosed")] SittingSchedule sittingSchedule)
         {
             if (id != sittingSchedule.SittingScheduleId)
             {
@@ -144,6 +138,7 @@ namespace BeanScene.Web.Controllers
         // POST: SittingSchedules/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Staff")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var sittingSchedule = await _context.SittingSchedules.FindAsync(id);

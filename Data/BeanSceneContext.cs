@@ -131,12 +131,12 @@ public partial class BeanSceneContext : DbContext
 
             entity.ToTable("SittingSchedule");
 
-            entity.HasIndex(e => new { e.Stype, e.StartDateTime, e.EndDateTime }, "UQ_Sitting_Window").IsUnique();
+            entity.HasIndex(e => new { e.Stype, e.StartTime, e.EndTime }, "UQ_Sitting_Window").IsUnique();
 
             entity.Property(e => e.SittingScheduleId).HasColumnName("SittingScheduleID");
-            entity.Property(e => e.EndDateTime).HasPrecision(0);
+            entity.Property(e => e.EndTime).HasPrecision(0);
             entity.Property(e => e.Scapacity).HasColumnName("SCapacity");
-            entity.Property(e => e.StartDateTime).HasPrecision(0);
+            entity.Property(e => e.StartTime).HasPrecision(0);
             entity.Property(e => e.Status)
                 .HasMaxLength(6)
                 .IsUnicode(false);

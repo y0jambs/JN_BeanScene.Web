@@ -11,16 +11,16 @@ public partial class SittingSchedule
     [Display(Name = "Sitting Type")]
     public string Stype { get; set; } = null!;
     [Display(Name = "Start Time")]
-    public DateTime StartDateTime { get; set; }
+    public TimeOnly StartTime { get; set; }
     [Display(Name = "End Time")]
-    public DateTime EndDateTime { get; set; }
+    public TimeOnly EndTime { get; set; }
 
     [Display(Name = "Capacity")]
     public int Scapacity { get; set; }
 
     public string Status { get; set; } = null!;
 
-    public bool IsClosed { get; set; }
+    //public bool IsClosed { get; set; }
 
     public virtual ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 }

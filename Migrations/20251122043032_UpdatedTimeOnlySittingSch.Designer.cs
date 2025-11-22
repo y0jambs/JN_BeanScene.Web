@@ -4,6 +4,7 @@ using BeanScene.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BeanScene.Web.Migrations
 {
     [DbContext(typeof(BeanSceneContext))]
-    partial class BeanSceneContextModelSnapshot : ModelSnapshot
+    [Migration("20251122043032_UpdatedTimeOnlySittingSch")]
+    partial class UpdatedTimeOnlySittingSch
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -164,15 +167,18 @@ namespace BeanScene.Web.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SittingScheduleId"));
 
-                    b.Property<TimeOnly>("EndTime")
+                    b.Property<TimeOnly>("EndDateTime")
                         .HasPrecision(0)
                         .HasColumnType("time(0)");
+
+                    b.Property<bool>("IsClosed")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Scapacity")
                         .HasColumnType("int")
                         .HasColumnName("SCapacity");
 
-                    b.Property<TimeOnly>("StartTime")
+                    b.Property<TimeOnly>("StartDateTime")
                         .HasPrecision(0)
                         .HasColumnType("time(0)");
 
@@ -192,7 +198,7 @@ namespace BeanScene.Web.Migrations
                     b.HasKey("SittingScheduleId")
                         .HasName("PK__SittingS__AE09170F976F16D2");
 
-                    b.HasIndex(new[] { "Stype", "StartTime", "EndTime" }, "UQ_Sitting_Window")
+                    b.HasIndex(new[] { "Stype", "StartDateTime", "EndDateTime" }, "UQ_Sitting_Window")
                         .IsUnique();
 
                     b.ToTable("SittingSchedule", (string)null);

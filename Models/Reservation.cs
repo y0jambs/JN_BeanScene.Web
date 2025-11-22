@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -30,7 +31,6 @@ public partial class Reservation
     public DateTime StartTime { get; set; }
 
     [Display(Name = "Duration(Mins)")]
-    [Range(15, 300)]
     public int Duration { get; set; }
 
     [Required, Range(1, 20), Display(Name = "Guests")]

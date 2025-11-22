@@ -4,6 +4,7 @@ using BeanScene.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BeanScene.Web.Migrations
 {
     [DbContext(typeof(BeanSceneContext))]
-    partial class BeanSceneContextModelSnapshot : ModelSnapshot
+    [Migration("20251122050915_RenameDateTimeToTimeOnly")]
+    partial class RenameDateTimeToTimeOnly
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -167,6 +170,9 @@ namespace BeanScene.Web.Migrations
                     b.Property<TimeOnly>("EndTime")
                         .HasPrecision(0)
                         .HasColumnType("time(0)");
+
+                    b.Property<bool>("IsClosed")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Scapacity")
                         .HasColumnType("int")
