@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using BeanScene.Web.Hubs;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using BeanScene.Web.Services;
+using BeanScene.Web.Components;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,6 +35,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSignalR();
 builder.Services.AddRazorPages();
 
+builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -54,6 +56,9 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapRazorPages();
+
+app.MapRazorComponents<ImageGenerator>()
+.AddInteractiveServerRenderMode();
 
 // Seed roles/admin
 using (var scope = app.Services.CreateScope())

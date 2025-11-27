@@ -50,24 +50,26 @@ namespace BeanScene.Web.Controllers
         // GET: RestaurantTables/Create
         public IActionResult Create()
         {
-            ViewData["AreaId"] = new SelectList(_context.Areas, "AreaId", "AreaId");
+            // No AreaId selection needed anymore – Area will be auto-assigned
             return View();
         }
 
         // POST: RestaurantTables/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RestaurantTableId,AreaId,TableName,Seats")] RestaurantTable restaurantTable)
+        public async Task<IActionResult> Create([Bind("RestaurantTableId,TableName,Seats")] RestaurantTable restaurantTable)
         {
             if (ModelState.IsValid)
             {
+                // Auto assign Area based on first letter of TableName (M/O/B)
+                restaurantTable.AreaId = GetAreaIdFromTableName(restaurantTable.TableName);
+
                 _context.Add(restaurantTable);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AreaId"] = new SelectList(_context.Areas, "AreaId", "AreaId", restaurantTable.AreaId);
+
             return View(restaurantTable);
         }
 
@@ -84,16 +86,16 @@ namespace BeanScene.Web.Controllers
             {
                 return NotFound();
             }
-            ViewData["AreaId"] = new SelectList(_context.Areas, "AreaId", "AreaId", restaurantTable.AreaId);
+
+            // No Area dropdown – Area will be recalculated from TableName if changed
             return View(restaurantTable);
         }
 
         // POST: RestaurantTables/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RestaurantTableId,AreaId,TableName,Seats")] RestaurantTable restaurantTable)
+        public async Task<IActionResult> Edit(int id, [Bind("RestaurantTableId,TableName,Seats")] RestaurantTable restaurantTable)
         {
             if (id != restaurantTable.RestaurantTableId)
             {
@@ -104,6 +106,9 @@ namespace BeanScene.Web.Controllers
             {
                 try
                 {
+                    // Keep AreaId in sync with TableName on edit
+                    restaurantTable.AreaId = GetAreaIdFromTableName(restaurantTable.TableName);
+
                     _context.Update(restaurantTable);
                     await _context.SaveChangesAsync();
                 }
@@ -120,7 +125,7 @@ namespace BeanScene.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AreaId"] = new SelectList(_context.Areas, "AreaId", "AreaId", restaurantTable.AreaId);
+
             return View(restaurantTable);
         }
 
@@ -156,6 +161,23 @@ namespace BeanScene.Web.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        // Helper: decide AreaId from the table name prefix (M/O/B)
+        private int GetAreaIdFromTableName(string tableName)
+        {
+            if (string.IsNullOrWhiteSpace(tableName))
+                throw new ArgumentException("Table name is required.", nameof(tableName));
+
+            var prefix = char.ToUpper(tableName[0]);
+
+            return prefix switch
+            {
+                'M' => 1, // Main (Inside)
+                'O' => 2, // Outside
+                'B' => 3, // Balcony
+                _ => throw new ArgumentException("Unknown area prefix. Use M, O, or B.")
+            };
         }
 
         private bool RestaurantTableExists(int id)

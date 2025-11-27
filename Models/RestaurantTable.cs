@@ -13,6 +13,7 @@ public partial class RestaurantTable
 
     [Required]
     [StringLength(50)]
+    [Display(Name = "Table Name")]
     public string TableName { get; set; } = string.Empty;
 
     [Range(1, 100)]                     // adjust max as you like

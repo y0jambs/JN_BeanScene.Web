@@ -1,0 +1,81 @@
+﻿@model BeanScene.Web.Models.DoublyLinkedListViewModel
+
+@{
+    ViewData["Title"] = "Doubly Linked List";
+}
+
+<h1 class="mb-4">Doubly Linked List Demo</h1>
+
+@if (!string.IsNullOrEmpty(Model.OperationMessage))
+{
+    <div class="alert alert-info">
+        @Model.OperationMessage
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <h4>Add Node</h4>
+        <form asp-action="AddFirst" method="post" class="mb-2">
+            <div class="input-group">
+                <input asp-for="ValueToAdd" class="form-control" placeholder="Enter value (e.g., 10)" />
+                <button type="submit" class="btn btn-primary">Add to Beginning</button>
+            </div>
+        </form>
+
+        <form asp-action="AddLast" method="post">
+            <div class="input-group">
+                <input asp-for="ValueToAdd" class="form-control" placeholder="Enter value (e.g., 10)" />
+                <button type="submit" class="btn btn-secondary">Add to End</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-md-6">
+        <h4>Delete Node</h4>
+        <form asp-action="Delete" method="post">
+            <div class="input-group">
+                <input asp-for="ValueToDelete" class="form-control" placeholder="Enter value to delete" />
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<hr />
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <h4>Forward Traversal</h4>
+        @if (Model.Forward.Count == 0)
+        {
+            <p><em>List is empty.</em></p>
+        }
+        else
+        {
+            <p>
+                @foreach (var item in Model.Forward)
+                {
+                    @item @: 
+                }
+            </p>
+        }
+    </div>
+
+    <div class="col-md-6">
+        <h4>Backward Traversal</h4>
+        @if (Model.Backward.Count == 0)
+        {
+            <p><em>List is empty.</em></p>
+        }
+        else
+        {
+            <p>
+                @foreach (var item in Model.Backward)
+                {
+                    @item @: 
+                }
+            </p>
+        }
+    </div>
+</div>
